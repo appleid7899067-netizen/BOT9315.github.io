@@ -1,0 +1,32 @@
+# ============================================================
+# Render Blueprint — deploy this portfolio as a Static Site
+# Docs: https://render.com/docs/blueprint-spec
+#
+# After this file is on the main branch:
+#   1. Go to https://dashboard.render.com  (sign in with GitHub)
+#   2. New -> Blueprint
+#   3. Select the BOT9315.github.io repository
+#   4. Render reads this file and creates the site automatically
+#
+# The site will be live at:
+#   https://bot9315-portfolio.onrender.com
+# Every push to main triggers an automatic redeploy.
+# ============================================================
+
+services:
+  - type: web
+    name: bot9315-portfolio
+    runtime: static
+    buildCommand: echo "Static site — no build step required"
+    staticPublishPath: ./
+    autoDeploy: true
+    headers:
+      # Always revalidate so updates show up immediately
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=0, must-revalidate
+    routes:
+      # Serve index.html for any unknown path (single-page site)
+      - type: rewrite
+        source: /*
+        destination: /index.html
